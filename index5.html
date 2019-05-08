@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>家庭魔法</title>
+	<style type="text/css">
+		*{
+			margin:0;
+			padding:0;
+		}
+		body{
+		  width: 100%;
+		  height: 100%;
+		  background: radial-gradient(#fff, green); 
+		}
+		.container{
+			width:300px;
+			height:300px;
+			/* border:1px solid #000; */
+			margin:150px auto;
+			perspective:20000px;
+		}
+		.box{
+			width:300px;
+			height:300px;
+			/* 控制子元素保持3D转换 */
+			transform-style:preserve-3d;
+			/*旋转*/
+			/* transform:rotateX(45deg) rotateY(45deg); */
+			/*匀速一直旋转*/
+			animation:rotate 15s linear infinite;   /*调用动画*/
+		}
+		
+		/* 魔方的运动 */
+		@keyframes rotate{			
+			100%{
+				transform:rotatex(360deg) rotatey(90deg) rotatez(180deg);
+			}
+		}
+
+		.box-page{
+			width:300px;
+			height:300px;
+			/* 位置初始化 绝对定位*/
+			position:absolute;  
+			transform-style:preserve-3d;
+			box-sizing: border-box;
+		}
+
+		.top{
+			/* background-color: red; */
+			transform:translateZ(150px);
+		}
+		.bottom{
+			/* background-color: green; */
+			transform:translateZ(-150px) rotateX(180deg);
+		}
+		.left{
+			/* background-color: orange; */
+			transform:translateX(-150px) rotateY(-90deg);
+		}
+		.right{
+			/* background-color: pink; */
+			transform:translateX(150px) rotateY(90deg);
+		}
+		.before{
+			/* background-color: blue; */
+			transform:translateY(150px) rotateX(-90deg);
+		}
+		.after{
+			/* background-color: yellow; */
+			transform:translateY(-150px) rotateX(90deg);
+		}
+		
+		/* 调用动画 */
+		.box-page div:first-child,.box-page div:nth-child(3),.box-page div:nth-child(5),.box-page div:nth-child(7),.box-page div:nth-child(9){
+			transform: rotateY(0deg);
+		    animation: rotatey 10s linear infinite;
+		}
+
+		
+		@keyframes rotatey{
+			10%{
+				transform: rotateY(0deg);
+				background-size: 300px 300px;
+			}
+			30%{
+				transform: rotateY(540deg);
+				background-size: 100px 100px;
+			}
+			70%{
+				transform: rotateY(540deg);
+				background-size: 100px 100px;
+			}
+			100%{
+				transform: rotateY(0deg);
+				background-size:300px 300px;
+			}
+		}
+
+		.box-page div:nth-child(2),.box-page div:nth-child(4),.box-page div:nth-child(6),.box-page div:nth-child(8){
+			transform:rotateX(0deg);
+		    animation: rotatex 10s linear infinite;
+		}
+
+		@keyframes rotatex{
+			10%{
+				transform: rotateX(0deg) scale(0);
+				background-size: 300px 300px;
+			}
+			30%{
+				transform: rotateX(540deg) scale(1);
+				background-size: 100px 100px;
+			}
+			70%{
+				transform: rotateX(540deg) scale(1);
+				background-size: 100px 100px;
+			}
+			100%{
+				transform: rotateX(0deg) scale(0)/*缩放*/;
+				background-size: 300px 300px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<!-- 容器 -->
+	<div class="container">
+		<div class="box">
+		<div class="box-page top"></div>
+		<div class="box-page bottom"></div>
+		<div class="box-page left"></div>
+		<div class="box-page right"></div>
+		<div class="box-page before"></div>
+		<div class="box-page after"></div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	
+	var arr = document.querySelectorAll(".box-page");
+	for(var n = 0;n<arr.length;n++){
+		for(var i=0;i<3;i++){
+			for(var j=0;j<3;j++){
+				var divs = document.createElement("div");
+				divs.style.cssText = "width:100px;height:100px;border: 1px solid #fff;position:absolute;box-sizing:border-box;background-image:url("+n+".jpg);background-size: 300px 300px;";
+				arr[n].appendChild(divs);
+
+				// 改变每一个div的位置
+				divs.style.left = 100*j+"px";
+				divs.style.top = 100*i+"px";
+
+				// 改变背景图相应的位置
+				divs.style.backgroundPositionX = -j*100+"px";
+				divs.style.backgroundPositionY = -i*100+"px";		
+			}
+		}
+	}
+
+	</script>
+</body>
+</html>
